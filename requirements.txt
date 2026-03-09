@@ -1,0 +1,10 @@
+streamlit
+sentence-transformers
+pandas
+pymorphy2
+nltk
+scikit-learn
+PyPDF2
+datasets
+accelerate
+pdfplumber
