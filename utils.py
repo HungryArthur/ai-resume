@@ -1,22 +1,20 @@
-import pymorphy2
+import razdel
 import nltk
 import re
 import os
+import pdfplumber
 from sentence_transformers import SentenceTransformer, util
-import pdfplumber  # Заменили на более надежный pdfplumber
+from nltk.corpus import stopwords
 
-# --- Инициализация ---
+# ИНИЦИАЛИЗАЦИЯ
 try:
     nltk.data.find('corpora/stopwords')
 except LookupError:
     nltk.download('stopwords')
 
-from nltk.corpus import stopwords
-
-morph = pymorphy2.MorphAnalyzer()
 stop_words = set(stopwords.words('russian'))
 
-# IT-навыки (добавлены варианты без спецсимволов для надежности)
+# IT-навыки
 IT_SKILLS = {
     'python', 'golang', 'go', 'java', 'javascript', 'typescript', 'cpp', 'c', 'c#', 'rust',
     'django', 'flask', 'fastapi', 'spring', 'react', 'vue', 'angular', 'gin', 'gorm',
@@ -34,9 +32,8 @@ hr_stop_words = {
 }
 stop_words.update(hr_stop_words)
 
-# --- Загрузка модели ---
-# Кэшируем модель в глобальной переменной, чтобы не грузить каждый раз
-_model_cache = None
+# ЗАГРУЗКА МОДЕЛИ
+_model_cache = None # Кэшируем модель в глобальной переменной, чтобы не грузить каждый раз
 
 def load_model():
     global _model_cache
@@ -70,26 +67,19 @@ def clean_text(text):
     text = re.sub(r'\S+@\S+', '', text)
     text = re.sub(r'\+?\d[\d\s\-\(\)]{9,}', '', text)
     
-    # ВАЖНО: Заменяем спецсимволы на пробелы, но оставляем буквы и цифры
+    # Заменяем спецсимволы на пробелы, но оставляем буквы и цифры
     # C# -> C # -> (потом разобьется на слова)
     text = re.sub(r'[^\w\sа-яА-ЯёЁ]', ' ', text)
     return text.lower().strip()
 
 def lemmatize_text(text):
-    words = text.split()
+    words = razdel.tokenize(text)
     lemmatized = []
-    for word in words:
+    for token in words:
+        word = token.text.lower()
         if word in stop_words or len(word) <= 2:
             continue
-        
-        # Оптимизация: если слово полностью на латинице, pymorphy2 его не изменит,
-        # но потратит время. Можно пропускать анализ для чистого латинского алфавита.
-        if word.isascii() and word.isalpha():
-            lemmatized.append(word) 
-        else:
-            p = morph.parse(word)[0]
-            lemmatized.append(p.normal_form)
-            
+        lemmatized.append(word)  # razdel уже нормализует
     return ' '.join(lemmatized)
 
 def preprocess_text(text):

@@ -1,5 +1,5 @@
 import json
-from sentence_transformers import SentenceTransformer, InputExample, losses
+from sentence_transformers import SentenceTransformer, InputExample, losses, util
 from torch.utils.data import DataLoader
 import os
 
@@ -23,9 +23,12 @@ def train_model(
     epochs=5,
     batch_size=16
 ):
-    print(f"📥 Загрузка базовой модели: {model_name}")
+    print()
+    print(f"Загрузка базовой модели: {model_name}")
+    print()
     model = SentenceTransformer(model_name)
     
+    print()
     print("📂 Загрузка данных...")
     data = load_training_data()
     examples = create_pair_examples(data)
@@ -58,7 +61,6 @@ def train_model(
     emb_good = model.encode(test_good, convert_to_tensor=True, normalize_embeddings=True)
     emb_bad = model.encode(test_bad, convert_to_tensor=True, normalize_embeddings=True)
     
-    from sentence_transformers import util
     score_good = util.cos_sim(emb_vac, emb_good)[0][0].item()
     score_bad = util.cos_sim(emb_vac, emb_bad)[0][0].item()
     

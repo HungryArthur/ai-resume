@@ -1,9 +1,9 @@
 import streamlit as st
+import time
 from utils import (
     load_model, preprocess_text, calculate_similarity, 
     extract_keywords, get_match_level, extract_text_from_pdf
 )
-import time
 
 # --- Конфигурация страницы ---
 st.set_page_config(
