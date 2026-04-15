@@ -1,11 +1,12 @@
 streamlit
 sentence-transformers
-pandas
 pymorphy2
+pandas
 nltk
 scikit-learn
 PyPDF2
 datasets
 accelerate
 pdfplumber
+razdel
 torchvision

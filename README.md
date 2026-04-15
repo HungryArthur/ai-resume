@@ -1,3 +1,31 @@
+## Linux
+### Скачивание
+```bash
+git clone https://github.com/hungryarthur/ai-resume
+code ai-resume
+```
+
+### Дообучение модели
+```bash
+python train_model.py
+```
+
+### Создание виртуального окружения
+```bash
+python3 -m venv venv
+source venv/bin/activate
+pip install --r requirements.txt
+```
+
+
+### Запуск программы
+```bash
+streamlit app.py
+```
+
+
+
+## Структура проекта
 ```
 resume_matcher/
 │
