@@ -166,6 +166,6 @@ if st.button("🚀 Оценить соответствие", type="primary", use
 st.divider()
 st.markdown("""
 <div style='text-align: center; color: gray;'>
-    <small>Учебный проект | NLP & ML | 2024</small>
+    <small>Учебный проект | NLP & ML | 2026</small>
 </div>
 """, unsafe_allow_html=True)
