@@ -1,5 +1,6 @@
 streamlit
 sentence-transformers
+pymorphy2
 pandas
 nltk
 scikit-learn
@@ -8,3 +9,4 @@ datasets
 accelerate
 pdfplumber
 razdel
+torchvision
